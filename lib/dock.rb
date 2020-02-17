@@ -11,4 +11,10 @@ class Dock
     @rental_log[boat] = renter
   end
 
+  def charge(boat)
+    require "pry"; binding.pry
+
+    boat.price_per_hour * boat.hours_rented
+  end
+
 end
