@@ -1,0 +1,23 @@
+require 'minitest/autorun'
+require 'minitest/pride'
+require './lib/boat'
+require './lib/renter'
+
+class RenterTest < MiniTest::Test
+
+  def setup
+    @renter = Renter.new("Patrick Star", "4242424242424242")
+  end
+
+  def test_renters_exist
+    assert_instance_of Renter, @renter
+  end
+
+  def test_renters_have_names
+    assert_equal "Patrick Star", @renter.name
+  end
+
+  def test_renters_have_credit_card_numbers
+    assert_equal "4242424242424242", @renter.credit_card_number
+  end
+end
