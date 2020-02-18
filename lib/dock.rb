@@ -11,13 +11,15 @@ class Dock
     @rental_log[boat] = renter
   end
 
-  def charge(boat)
+  def charge(boat_to_find)
     renter_info = {}
-    boat_info = rental_log.find {|boat| boat == boat}
+    boat_info = rental_log.find {|boat, renters| boat == boat_to_find}
     renter_info[:card_number] = boat_info[1].credit_card_number
-    renter_info[:amount] = boat.price_per_hour * boat.hours_rented
+      if boat_to_find.hours_rented <= 3
+        renter_info[:amount] = boat_to_find.hours_rented * boat_to_find.price_per_hour
+      else
+        renter_info[:amount] = 3 * boat_to_find.price_per_hour
+    end
     renter_info
-    # require "pry"; binding.pry
   end
-
 end

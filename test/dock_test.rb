@@ -17,8 +17,6 @@ class DockTest < MiniTest::Test
     @dock.rent(@kayak_1, @patrick)
     @dock.rent(@kayak_2, @patrick)
     @dock.rent(@sup_1, @eugene)
-    @kayak_1.add_hour
-    @kayak_1.add_hour
   end
 
   def test_docks_exist
@@ -38,12 +36,30 @@ class DockTest < MiniTest::Test
   end
 
   def test_dock_renters_can_be_charged_hourly
+    @kayak_1.add_hour
+    @kayak_1.add_hour
+    
     assert_equal ({
       :card_number => "4242424242424242",
       :amount => 40
     }), @dock.charge(@kayak_1)
   end
 
+  def test_renters_are_not_charged_for_rental_time_past_max_rental_hours
+    @kayak_1.add_hour
+    @kayak_1.add_hour
+    @sup_1.add_hour
+    @sup_1.add_hour
+    @sup_1.add_hour
+    @sup_1.add_hour
+    @sup_1.add_hour
+
+    assert_equal ({
+      :card_number => "1313131313131313",
+      :amount => 45
+    }), @dock.charge(@sup_1)
+  end
+end
 
 # Use TDD to implement a `Dock#charge` method:
 #
@@ -52,22 +68,4 @@ class DockTest < MiniTest::Test
 #   * The key `:card_number` points to the credit card number of the `Renter` that rented the boat
 #   * The key `:amount` points to the amount that should be charged. The amount is calculated by multiplying the Boat's price_per_hour by the number of hours it was rented. However, any hours past the Dock's max_rental_time should not be counted. So if a Boat is rented for 4 hours, and the max_rental_time is 3, the charge should only be for 3 hours.
 
-# pry(main)> sup_1.add_hour
-#
-# pry(main)> sup_1.add_hour
-#
-# pry(main)> sup_1.add_hour
-#
 # # Any hours past the max rental time should not count
-# pry(main)> sup_1.add_hour
-#
-# pry(main)> sup_1.add_hour
-#
-# pry(main)> dock.charge(sup_1)
-# # =>
-# # {
-# #   :card_number => "1313131313131313",
-# #   :amount => 45
-# # }
-# ```
-end
