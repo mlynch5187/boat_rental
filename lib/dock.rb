@@ -12,9 +12,12 @@ class Dock
   end
 
   def charge(boat)
-    require "pry"; binding.pry
-
-    boat.price_per_hour * boat.hours_rented
+    renter_info = {}
+    boat_info = rental_log.find {|boat| boat == boat}
+    renter_info[:card_number] = boat_info[1].credit_card_number
+    renter_info[:amount] = boat.price_per_hour * boat.hours_rented
+    renter_info
+    # require "pry"; binding.pry
   end
 
 end
